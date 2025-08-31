@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nin Nin! (∠・∇< )</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+            margin-left: 30px;
+            margin-right: 30px;
+            background-image: url("asset/izuna_bg.jpg");
+            background-repeat: repeat; /* Prevent tiling */
+            background-position: center;  /* Align the image to the left */
+            background-size: cover; /* Cover the entire background */
+        }
+        img {
+            max-width: 300px;
+            cursor: pointer;
+            filter: drop-shadow(2px 2px 0 white)
+            drop-shadow(-2px 2px 0 white)
+            drop-shadow(2px -2px 0 white)
+            drop-shadow(-2px -2px 0 white);
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0px;
+        }
+        .container {
+            perspective: 1000px; /* Needed for proper 3D rotation */
+        }
+        .jump-flip {
+            width: 200px;
+            display: block;
+            transform-origin: center bottom; /* Pivot at bottom for jumping */
+            animation: jumpFlip 2s ease-in-out;
+            transform-style: preserve-3d;
+            animation-iteration-count: infinite;
+        }
+        @keyframes jumpFlip {
+            0% {
+                transform: translateY(0) rotateY(0deg) scale(150%); /* Start at original position */
+            }
+            25% {
+                transform: translateY(-150px) rotateY(90deg) scale(150%); /* Jump up while starting flip */
+            }
+            50% {
+                transform: translateY(-200px) rotateY(180deg) scale(150%); /* Peak of jump, half flip */
+            }
+            75% {
+                transform: translateY(-150px) rotateY(270deg) scale(150%); /* Coming down, almost complete flip */
+            }
+            100% {
+                transform: translateY(0) rotateY(360deg) scale(150%); /* Back to original position, flip complete */
+            }
+        }
+        .stroke {
+            text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+        }
+    </style>
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Nin Nin! (∠・∇< ) ">
+    <meta name="keywords" content="Izuna, Blue Archive">
+</head>
+<body>
+    <h1 class="stroke">I have hired this Izuna to stare at you.</h1>
+    <!-- Image -->
+    <div class="container">
+        <img src="asset/izuna.png" alt="Nin Nin!" id="Ninnin">
+    </div>
+
+    <b class="stroke">Click her.</b>
+    <b class="stroke">(Preferably with sound on.)</b>
+    <!-- Empty audio element -->
+    <audio id="audio"></audio>
+
+    <script>
+        const img = document.getElementById("Ninnin");
+        const audio = document.getElementById("audio");
+
+        // List of local audio files
+        audioFiles = [
+            "asset/audio/Aruji_Dono.mp3",
+            "asset/audio/Hum.mp3",
+            "asset/audio/Laugh.mp3",
+            "asset/audio/Nin_Nin.mp3",
+            "asset/audio/Sasasa.mp3",
+            "asset/audio/Summer_Hum.mp3"
+        ];
+
+        img.addEventListener("click", () => {
+
+            audio.removeEventListener("ended", () => {});
+            img.removeEventListener("animationiteration", () => {});
+
+            img.classList.add("jump-flip");
+
+            // Set audio source
+            audio.src = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+            audio.currentTime = 0;
+            audio.play();
+            
+            audio.addEventListener("ended", () => {
+                img.addEventListener("animationiteration", () => {
+                    img.classList.remove("jump-flip");
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+<footer>
+    <span class="stroke">&copy; <span id="year"></span> Izuna Nin Nin. All rights NOT reserved.</span>
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <span class="stroke">Partner Site: <a href="https://koyuki.moe" target="_blank">Koyuki Nihahahaha (✧ ∇ ✧)</a></span>
+    <div style="margin-top: 20px;">
+        <span class="stroke">Hosted on <a href="https://github.com/akasakakona/izuna_nin_nin" target="_blank">GitHub Pages</a>.</span>        
+    </div>
+    <span class="stroke">Go play <a href="https://store.steampowered.com/app/3557620/Blue_Archive/" target="_blank">Blue Archive</a> if you haven't already!</span>
+</footer>
+</html>
